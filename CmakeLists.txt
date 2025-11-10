@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.16)
+project(DLP LANGUAGES CXX)
+
+# Force Unicode API usage
+add_definitions(-DUNICODE -D_UNICODE)
+
+# Use C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Include and source directories
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+
+# Collect all .cpp files in src/
+file(GLOB SRC_FILES "${SRC_DIR}/*.cpp")
+
+# Create executable target
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+# Include headers
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
+
+# Link Windows libraries
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE gdiplus user32 gdi32)
+endif()
